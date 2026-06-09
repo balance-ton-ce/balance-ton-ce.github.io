@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balance Ton CE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink-light:  #f472b6;
+      --pink-mid:    #ec4899;
+      --magenta:     #c026a0;
+      --violet:      #4c1d95;
+      --white:       #ffffff;
+      --white-soft:  rgba(255,255,255,0.85);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #f9a8d4 0%, #ec4899 35%, #be185d 70%, #9d174d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    /* ─── Bulles décoratives ─── */
+    .bubbles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.07);
+      animation: floatUp linear infinite;
+    }
+
+    /* 14 bulles avec tailles/positions/durées variées */
+    .bubble:nth-child(1)  { width:90px;  height:90px;  left:5%;   animation-duration:9s;  animation-delay:0s;   bottom:-100px; }
+    .bubble:nth-child(2)  { width:50px;  height:50px;  left:12%;  animation-duration:12s; animation-delay:2s;   bottom:-100px; }
+    .bubble:nth-child(3)  { width:140px; height:140px; left:22%;  animation-duration:14s; animation-delay:1s;   bottom:-150px; }
+    .bubble:nth-child(4)  { width:35px;  height:35px;  left:35%;  animation-duration:8s;  animation-delay:4s;   bottom:-100px; }
+    .bubble:nth-child(5)  { width:75px;  height:75px;  left:48%;  animation-duration:11s; animation-delay:0.5s; bottom:-100px; }
+    .bubble:nth-child(6)  { width:110px; height:110px; left:58%;  animation-duration:13s; animation-delay:3s;   bottom:-150px; }
+    .bubble:nth-child(7)  { width:55px;  height:55px;  left:68%;  animation-duration:10s; animation-delay:1.5s; bottom:-100px; }
+    .bubble:nth-child(8)  { width:80px;  height:80px;  left:78%;  animation-duration:15s; animation-delay:0s;   bottom:-100px; }
+    .bubble:nth-child(9)  { width:30px;  height:30px;  left:88%;  animation-duration:7s;  animation-delay:2.5s; bottom:-100px; }
+    .bubble:nth-child(10) { width:60px;  height:60px;  left:93%;  animation-duration:11s; animation-delay:5s;   bottom:-100px; }
+    .bubble:nth-child(11) { width:45px;  height:45px;  left:3%;   animation-duration:9s;  animation-delay:6s;   bottom:-100px; }
+    .bubble:nth-child(12) { width:100px; height:100px; left:42%;  animation-duration:16s; animation-delay:1s;   bottom:-150px; }
+    .bubble:nth-child(13) { width:25px;  height:25px;  left:55%;  animation-duration:8s;  animation-delay:3.5s; bottom:-100px; }
+    .bubble:nth-child(14) { width:70px;  height:70px;  left:75%;  animation-duration:12s; animation-delay:7s;   bottom:-100px; }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-110vh) scale(0.85); opacity: 0; }
+    }
+
+    /* ─── Contenu principal ─── */
+    .card {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--violet);
+      margin-bottom: 0.6rem;
+    }
+
+    .main-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 14vw, 7.5rem);
+      line-height: 0.92;
+      text-transform: uppercase;
+      color: var(--white);
+      text-shadow: 0 3px 18px rgba(0,0,0,0.18);
+      margin-bottom: 0.5rem;
+      /* légère rotation comme dans l'affiche */
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+
+    .main-title .ce {
+      color: var(--violet);
+      -webkit-text-stroke: 2px var(--violet);
+    }
+
+    .bubble-label-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.4rem 0 2rem;
+      flex-wrap: wrap;
+    }
+
+    .bubble-label {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--white);
+      backdrop-filter: blur(4px);
+      transition: transform 0.25s ease;
+    }
+    .bubble-label:hover { transform: scale(1.08); }
+    .bubble-label.large {
+      width: 120px;
+      height: 120px;
+      font-size: 1.6rem;
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      font-weight: 600;
+      color: var(--white-soft);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .coming-soon {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 1rem 2.8rem;
+      border: 3px solid rgba(255,255,255,0.65);
+      border-radius: 999px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(8px);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 2px;
+      margin: 2rem auto;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .bubble-label { width: 72px; height: 72px; font-size: 1rem; }
+      .bubble-label.large { width: 96px; height: 96px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bulles flottantes -->
+  <div class="bubbles" aria-hidden="true">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Contenu -->
+  <main class="card">
+
+    <p class="eyebrow">Action — début juillet</p>
+
+    <div>
+      <span class="main-title">Balance<br>Ton <span class="ce">CE…</span></span>
+    </div>
+
+    <!-- Bulles CEB / CE1D / CESS comme sur l'affiche -->
+    <div class="bubble-label-row" aria-label="Certificats concernés : CEB, CE1D, CESS">
+      <div class="bubble-label large">CEB</div>
+      <div class="bubble-label">CE1D</div>
+      <div class="bubble-label">CESS</div>
+    </div>
+
+    <p class="tagline">
+      Venez déposer les épreuves externes non encodées<br>
+      au cabinet de la Ministre de l'Éducation.<br>
+      On fera la fête en fanfare et en bulles.
+    </p>
+
+    <div class="divider"></div>
+
+    <span class="coming-soon">🔧 Site en construction — Plus d'infos très bientôt !</span>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Balance Ton CE &mdash; Page temporaire
+  </footer>
+
+</body>
+</html>
