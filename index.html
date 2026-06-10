@@ -16,12 +16,12 @@
       --pink-mid:    #ec4899;
       --magenta:     #c026a0;
       --violet:      #4c1d95;
+      --violet-soft: rgba(76,29,149,0.85);
       --white:       #ffffff;
       --white-soft:  rgba(255,255,255,0.85);
     }
 
     html, body {
-      height: 100%;
       font-family: 'Barlow', sans-serif;
       overflow-x: hidden;
     }
@@ -29,11 +29,11 @@
     body {
       min-height: 100vh;
       background: linear-gradient(160deg, #f9a8d4 0%, #ec4899 35%, #be185d 70%, #9d174d 100%);
+      background-attachment: fixed;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
+      padding: 2rem 1.5rem 4rem;
       position: relative;
     }
 
@@ -45,7 +45,6 @@
       overflow: hidden;
       z-index: 0;
     }
-
     .bubble {
       position: absolute;
       border-radius: 50%;
@@ -53,8 +52,6 @@
       background: rgba(255,255,255,0.07);
       animation: floatUp linear infinite;
     }
-
-    /* 14 bulles avec tailles/positions/durées variées */
     .bubble:nth-child(1)  { width:90px;  height:90px;  left:5%;   animation-duration:9s;  animation-delay:0s;   bottom:-100px; }
     .bubble:nth-child(2)  { width:50px;  height:50px;  left:12%;  animation-duration:12s; animation-delay:2s;   bottom:-100px; }
     .bubble:nth-child(3)  { width:140px; height:140px; left:22%;  animation-duration:14s; animation-delay:1s;   bottom:-150px; }
@@ -71,18 +68,25 @@
     .bubble:nth-child(14) { width:70px;  height:70px;  left:75%;  animation-duration:12s; animation-delay:7s;   bottom:-100px; }
 
     @keyframes floatUp {
-      0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+      0%   { transform: translateY(0) scale(1);   opacity: 0; }
       10%  { opacity: 1; }
       90%  { opacity: 0.6; }
       100% { transform: translateY(-110vh) scale(0.85); opacity: 0; }
     }
 
-    /* ─── Contenu principal ─── */
-    .card {
+    /* ─── Layout général ─── */
+    .page {
       position: relative;
       z-index: 1;
-      max-width: 640px;
       width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
       text-align: center;
     }
 
@@ -105,15 +109,10 @@
       color: var(--white);
       text-shadow: 0 3px 18px rgba(0,0,0,0.18);
       margin-bottom: 0.5rem;
-      /* légère rotation comme dans l'affiche */
       transform: rotate(-1.5deg);
       display: inline-block;
     }
-
-    .main-title .ce {
-      color: var(--violet);
-      -webkit-text-stroke: 2px var(--violet);
-    }
+    .main-title .ce { color: var(--violet); -webkit-text-stroke: 2px var(--violet); }
 
     .bubble-label-row {
       display: flex;
@@ -122,41 +121,57 @@
       margin: 1.4rem 0 2rem;
       flex-wrap: wrap;
     }
-
     .bubble-label {
-      width: 90px;
-      height: 90px;
+      width: 90px; height: 90px;
       border-radius: 50%;
       border: 2.5px solid rgba(255,255,255,0.6);
       background: rgba(255,255,255,0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
+      font-weight: 700; font-size: 1.25rem;
       color: var(--white);
       backdrop-filter: blur(4px);
       transition: transform 0.25s ease;
     }
     .bubble-label:hover { transform: scale(1.08); }
-    .bubble-label.large {
-      width: 120px;
-      height: 120px;
-      font-size: 1.6rem;
-    }
+    .bubble-label.large { width: 120px; height: 120px; font-size: 1.6rem; }
 
     .tagline {
       font-size: clamp(1rem, 3vw, 1.2rem);
       font-weight: 600;
       color: var(--white-soft);
       margin-bottom: 0.5rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
+    .divider {
+      width: 60px; height: 3px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 2px;
+      margin: 1.5rem auto;
+    }
+
+    /* ─── Vidéo ─── */
+    .video-wrap {
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: rgba(0,0,0,0.2);
+    }
+    .video-wrap iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ─── Bouton CTA ─── */
     .cta-btn {
       display: inline-block;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       padding: 1rem 3rem;
       background: var(--violet);
       color: var(--white);
@@ -170,40 +185,186 @@
       box-shadow: 0 6px 28px rgba(76,29,149,0.45);
       transition: background 0.2s ease, transform 0.2s ease;
     }
-    .cta-btn:hover {
-      background: #3b0764;
+    .cta-btn:hover { background: #3b0764; transform: translateY(-2px); }
+
+    /* ─── Blocs info ─── */
+    .info-block {
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      text-align: left;
+    }
+    .info-block.white-block {
+      background: rgba(255,255,255,0.92);
+      color: #1e1b2e;
+    }
+    .info-block.violet-block {
+      background: rgba(76,29,149,0.82);
+      color: var(--white);
+      backdrop-filter: blur(8px);
+    }
+
+    .block-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+    .white-block .block-title { color: var(--violet); }
+    .violet-block .block-title { color: var(--pink-light); }
+
+    .block-intro {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Accordéon CEB/CE1D/CESS */
+    .accordion { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.4rem; }
+
+    .accordion-item { border-radius: 8px; overflow: hidden; }
+    .white-block .accordion-item { background: rgba(76,29,149,0.08); border: 1.5px solid rgba(76,29,149,0.15); }
+
+    .accordion-btn {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.15rem;
+      text-align: left;
+      transition: background 0.2s;
+    }
+    .white-block .accordion-btn { color: var(--violet); }
+    .white-block .accordion-btn:hover { background: rgba(76,29,149,0.07); }
+
+    .accordion-btn .tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--violet);
+      color: white;
+      margin-left: 0.5rem;
+      flex-shrink: 0;
+    }
+    .accordion-btn .arrow {
+      font-size: 0.9rem;
+      transition: transform 0.25s;
+      margin-left: auto;
+      padding-left: 0.8rem;
+      flex-shrink: 0;
+    }
+    .accordion-btn[aria-expanded="true"] .arrow { transform: rotate(180deg); }
+
+    .accordion-body {
+      display: none;
+      padding: 0.5rem 1rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .accordion-body.open { display: block; }
+
+    /* Bullet list avec bulles roses */
+    .bubble-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+    .bubble-list li {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      font-size: 0.97rem; line-height: 1.55;
+    }
+    .bubble-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 10px; height: 10px;
+      margin-top: 0.35em;
+      border-radius: 50%;
+      background: var(--pink-mid);
+      border: 2px solid var(--magenta);
+    }
+    .violet-block .bubble-list li::before {
+      background: var(--pink-light);
+      border-color: var(--white);
+    }
+
+    .sub-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.2rem 0 0.6rem;
+    }
+    .white-block .sub-title { color: var(--magenta); }
+    .violet-block .sub-title { color: var(--pink-light); }
+
+    /* CTA final */
+    .final-cta {
+      text-align: center;
+      padding-top: 0.5rem;
+    }
+    .final-cta .big-question {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      text-transform: uppercase;
+      color: var(--pink-light);
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    /* Footer contact */
+    .contact-footer {
+      text-align: center;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      border-radius: 14px;
+      padding: 1.6rem 2rem;
+      color: var(--white);
+    }
+    .contact-footer h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .contact-link:hover {
+      background: rgba(255,255,255,0.25);
       transform: translateY(-2px);
     }
-
-    .video-wrap {
-      margin-top: 2rem;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-      background: rgba(0,0,0,0.2);
-    }
-    .video-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 2px;
-      margin: 2rem auto;
-    }
+    .contact-link .icon { font-size: 1.1rem; }
 
     @media (max-width: 480px) {
       .bubble-label { width: 72px; height: 72px; font-size: 1rem; }
       .bubble-label.large { width: 96px; height: 96px; font-size: 1.3rem; }
+      .info-block { padding: 1.4rem 1.2rem; }
     }
   </style>
 </head>
@@ -211,69 +372,184 @@
 
   <!-- Bulles flottantes -->
   <div class="bubbles" aria-hidden="true">
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div>
   </div>
 
-  <!-- Contenu -->
-  <main class="card">
+  <div class="page">
 
-    <p class="eyebrow">Action — début juillet</p>
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <p class="eyebrow">Action — début juillet</p>
+      <div>
+        <span class="main-title">Balance<br>Ton <span class="ce">CE…</span></span>
+      </div>
 
-    <div>
-      <span class="main-title">Balance<br>Ton <span class="ce">CE…</span></span>
-    </div>
+      <div class="bubble-label-row" aria-label="Certificats concernés : CEB, CE1D, CESS">
+        <div class="bubble-label large">CEB</div>
+        <div class="bubble-label">CE1D</div>
+        <div class="bubble-label">CESS</div>
+      </div>
 
-    <!-- Bulles CEB / CE1D / CESS comme sur l'affiche -->
-    <div class="bubble-label-row" aria-label="Certificats concernés : CEB, CE1D, CESS">
-      <div class="bubble-label large">CEB</div>
-      <div class="bubble-label">CE1D</div>
-      <div class="bubble-label">CESS</div>
-    </div>
+      <p class="tagline">
+        Venez transmettre les épreuves externes<br>
+        en mains propres au cabinet<br>
+        de la Ministre de l'Éducation.<br>
+        On fera la fête en fanfare et en bulles.
+      </p>
 
-    <p class="tagline">
-      Venez transmettre vos épreuves externes <br>
-      en mains propres au cabinet <br>
+      <div class="divider"></div>
 
-      de la Ministre de l'Éducation.<br>
-      On fera la fête en fanfare et en bulles.
-    </p>
+      <div class="video-wrap">
+        <iframe width="560" height="315"
+          src="https://www.youtube.com/embed/t5SD6MrRudM?si=kfTCMPjbxGGggyQQ"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
 
-    <!-- Bouton inscription -->
-    <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeUYfT7N2fzrVzj0wUtFhy1yqmoOa1x1igv3IzIedQwFIQ6dQ/viewform?usp=sharing&ouid=107829305261002033114" target="_blank" rel="noopener">
-      ✊ Je participe à l'action !
-    </a>
-    
-    <div class="divider"></div>
-
-    <!-- Vidéo -->
-    <div class="video-wrap">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/t5SD6MrRudM?si=kfTCMPjbxGGggyQQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-
-    <!-- Compteur de vues -->
-    <div style="margin-top: 2.5rem; opacity: 0.7;">
-      <a href="https://hits.seeyoufarm.com">
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=http%3A%2F%2Fwww.balance-ton-ce.be&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="Compteur de visites"/>
+      <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeUYfT7N2fzrVzj0wUtFhy1yqmoOa1x1igv3IzIedQwFIQ6dQ/viewform?usp=sharing&ouid=107829305261002033114"
+        target="_blank" rel="noopener">
+        ✊ Je participe à l'action !
       </a>
-    </div>
+    </section>
 
+    <!-- ── BLOC 1 : C'est quoi une épreuve externe ? ── -->
+    <section class="info-block white-block">
+      <h2 class="block-title">🎓 C'est quoi une épreuve externe ?</h2>
+      <p class="block-intro">
+        Une épreuve externe est une évaluation organisée par la Fédération Wallonie-Bruxelles,
+        qui s'impose à l'ensemble des élèves d'un même niveau scolaire, le même jour, avec le même sujet.
+        Elle intervient à trois moments-clés de la scolarité :
+      </p>
 
+      <!-- Accordéon -->
+      <div class="accordion">
 
-  </main>
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false" onclick="toggleAccordion(this)">
+            <span>Fin de 6e primaire</span>
+            <span class="tag">CEB</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div class="accordion-body">
+            Cours concernés : <strong>Français, Mathématiques, Éveil</strong>
+          </div>
+        </div>
 
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false" onclick="toggleAccordion(this)">
+            <span>Fin de 2e secondaire</span>
+            <span class="tag">CE1D</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div class="accordion-body">
+            Cours concernés : <strong>Français, Mathématiques, Sciences, Langues modernes</strong>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn" aria-expanded="false" onclick="toggleAccordion(this)">
+            <span>Fin de 6e secondaire</span>
+            <span class="tag">CESS</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div class="accordion-body">
+            Cours concernés : <strong>Français et Histoire</strong>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="sub-title">Concrètement, comment ça se passe ?</p>
+      <ul class="bubble-list">
+        <li>L'élève, préparé en classe, présente son épreuve externe à la date imposée par la Fédération Wallonie-Bruxelles.</li>
+        <li>Sa copie est corrigée par les enseignant·e·s sur base d'un correctif détaillé et d'une longue grille critériée, fournis par la Fédération.</li>
+        <li>Le résultat est transmis au conseil de délibération de fin d'année selon des modalités spécifiques à chaque épreuve (CEB, CE1D, CESS).</li>
+        <li>Le résultat est communiqué à l'élève via son bulletin de fin d'année.</li>
+        <li>L'enseignant·e doit ensuite encoder les résultats de chaque élève pour chacun des (nombreux) critères de la grille d'évaluation dans un fichier Excel.</li>
+        <li>Ce fichier est envoyé par l'établissement à la Fédération Wallonie-Bruxelles pour lui permettre de réaliser des statistiques.</li>
+      </ul>
+    </section>
+
+    <!-- ── BLOC 2 : Pourquoi refusons-nous d'encoder ? ── -->
+    <section class="info-block violet-block">
+      <h2 class="block-title">✊ Pourquoi refusons-nous d'encoder ?</h2>
+
+      <p class="block-intro">
+        L'encodage est une charge administrative qui n'a aucune utilité d'ordre pédagogique.
+        Elle ne sert qu'à alimenter des statistiques, mais n'apporte rien ni à l'élève, ni à son enseignant·e.
+      </p>
+
+      <p class="block-intro">
+        En refusant d'encoder, nous souhaitons contribuer à visibiliser le travail enseignant
+        qui s'effectue « hors classe », en proposant à la Fédération Wallonie-Bruxelles de réaliser
+        elle-même ce travail administratif rébarbatif et peu porteur de sens.
+      </p>
+
+      <p class="block-intro">
+        En refusant d'encoder, nous souhaitons également rappeler que notre colère ne se tarit pas.
+        Nous refusons toujours les mesures budgétaires votées le 4 juin dernier par les députés de la majorité MR-Engagés.
+        Nous continuons à dire <strong>NON</strong> :
+      </p>
+
+      <p class="sub-title">Sur le fond</p>
+      <ul class="bubble-list">
+        <li>Ces mesures reflètent une grande ignorance et un mépris de la réalité enseignante.</li>
+        <li>Elles fragilisent un secteur déjà à bout de souffle.</li>
+      </ul>
+
+      <p class="sub-title">Sur la forme</p>
+      <ul class="bubble-list">
+        <li>Ces mesures ont été imposées sans aucune concertation sociale.</li>
+        <li>Elles ne respectent pas les règles démocratiques internes au fonctionnement du Parlement.</li>
+      </ul>
+
+      <p class="block-intro" style="margin-top:1.2rem;">
+        En déposant nos épreuves devant le cabinet de la Ministre de l'Éducation en bulles et en fanfare,
+        nous souhaitons aussi montrer que notre résistance est <strong>créative, pacifique et joyeuse</strong>.
+        L'été ne nous arrêtera pas.
+      </p>
+
+      <!-- CTA final -->
+      <div class="final-cta">
+        <p class="big-question">Alors, tu nous rejoins&nbsp;?</p>
+        <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeUYfT7N2fzrVzj0wUtFhy1yqmoOa1x1igv3IzIedQwFIQ6dQ/viewform?usp=sharing&ouid=107829305261002033114"
+          target="_blank" rel="noopener">
+          ✊ Je participe à l'action !
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer contact -->
+    <section class="contact-footer">
+      <h3>📬 Pour nous contacter</h3>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:balancetonce@gmail.com">
+          <span class="icon">✉️</span> balancetonce@gmail.com
+        </a>
+        <a class="contact-link" href="https://www.instagram.com/balancetonce/" target="_blank" rel="noopener">
+          <span class="icon">📸</span> Instagram
+        </a>
+        <a class="contact-link" href="https://www.facebook.com/people/Balance-ton-CE/61590379515777/" target="_blank" rel="noopener">
+          <span class="icon">👥</span> Facebook
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function toggleAccordion(btn) {
+      const body = btn.nextElementSibling;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !isOpen);
+      body.classList.toggle('open', !isOpen);
+    }
+  </script>
 
 </body>
 </html>
