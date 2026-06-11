@@ -317,6 +317,41 @@
       line-height: 1;
     }
 
+    /* Bouton download */
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+      padding: 0.9rem 2.2rem;
+      background: var(--white);
+      color: var(--violet);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .download-btn:hover {
+      background: #f3e8ff;
+      transform: translateY(-2px);
+    }
+
+    /* Section lettre */
+    .letter-block {
+      background: rgba(255,255,255,0.92);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      text-align: center;
+      color: #1e1b2e;
+    }
+    .letter-block .block-title { color: var(--violet); margin-bottom: 0.8rem; }
+    .letter-block .block-intro { color: #3b2a5a; }
+
     /* Footer contact */
     .contact-footer {
       text-align: center;
@@ -522,6 +557,20 @@
           ✊ Je participe à l'action !
         </a>
       </div>
+    </section>
+
+    <!-- ── BLOC 3 : Lettre aux directions et PO ── -->
+    <section class="info-block letter-block">
+      <h2 class="block-title">📄 Lettre pour ta direction et ton PO</h2>
+      <p class="block-intro">
+        Tu veux informer ta direction ou ton pouvoir organisateur de ta participation à l'action ?
+        Télécharge la lettre type ci-dessous, complète-la et transmets-la.
+      </p>
+      <a class="download-btn"
+        href="https://github.com/balance-ton-ce/balance-ton-ce.github.io/raw/refs/heads/main/Lettre%20aux%20directions%20et%20PO.docx"
+        download>
+        ⬇️ Télécharger la lettre (.docx)
+      </a>
     </section>
 
     <!-- Footer contact -->
